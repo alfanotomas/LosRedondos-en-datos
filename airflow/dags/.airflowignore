@@ -1,0 +1,4 @@
+# Carpetas que Airflow no tiene que leer buscando DAGs.
+# extraccion/ son módulos que usa el DAG, no DAGs.
+# Ojo: "extraccion/" (con la barra al final) no funciona en Airflow 3.1.
+extraccion/**
