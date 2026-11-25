@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_musicbrainz_grabaciones
+    description: >
+      Grabaciones (recordings) del artista en MusicBrainz, una fila por
+      grabación y por extracción. "Versiones registradas en MusicBrainz" no es
+      lo mismo que "veces que la tocaron en vivo".
+    columns:
+      - name: fecha_extraccion
+        tests:
+          - not_null
+      - name: grabacion_id
+        description: MBID de la grabación.
+        tests:
+          - not_null
+      - name: titulo_original
+        description: Título tal como viene de MusicBrainz.
+      - name: titulo_normalizado
+        description: Título limpio (macro normalizar_titulo), clave para cruzar con el seed de alias.
+        tests:
+          - not_null
+      - name: desambiguacion
+        description: Texto libre de MusicBrainz; en las grabaciones en vivo suele traer fecha y lugar.
+      - name: marcada_en_vivo
+        description: >
+          true si la desambiguación empieza con "live". Es un mínimo: muchas
+          grabaciones en vivo no tienen la etiqueta.
+        tests:
+          - not_null
+      - name: fecha_primera_edicion
+        description: Primera edición de la grabación (AAAA, AAAA-MM o AAAA-MM-DD); puede faltar.
+      - name: duracion_segundos
+        description: Duración; falta en muchas grabaciones.

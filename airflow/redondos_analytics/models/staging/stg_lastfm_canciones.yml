@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_lastfm_canciones
+    description: >
+      Canciones de Last.fm (artist.getTopTracks), una fila por entrada y por
+      extracción. Reproducciones y oyentes son una muestra: solo cuentan a
+      quienes usan Last.fm, no el total real.
+    columns:
+      - name: fecha_extraccion
+        description: Día en que se bajaron los datos.
+        tests:
+          - not_null
+      - name: puesto
+        description: Posición en el ranking de Last.fm (ordenado por oyentes).
+        tests:
+          - not_null
+      - name: titulo_original
+        description: Título tal como viene de Last.fm.
+      - name: titulo_normalizado
+        description: Título limpio (macro normalizar_titulo), clave para cruzar con el seed de alias.
+        tests:
+          - not_null
+      - name: reproducciones
+        tests:
+          - not_null
+      - name: oyentes
+        tests:
+          - not_null

@@ -10,6 +10,10 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
+# Los JSON crudos se registran como vistas al arrancar cada corrida.
+on-run-start:
+  - "{{ registrar_fuentes_crudas() }}"
+
 clean-targets:
   - "target"
   - "dbt_packages"

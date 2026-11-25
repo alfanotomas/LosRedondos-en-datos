@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_discos_temas
+    description: >
+      Temas de los 10 discos de estudio según MusicBrainz (una edición por
+      disco), una fila por tema y por extracción.
+    columns:
+      - name: fecha_extraccion
+        tests:
+          - not_null
+      - name: disco_id
+        description: MBID del release group (el disco, sin importar la edición).
+        tests:
+          - not_null
+      - name: disco
+        tests:
+          - not_null
+      - name: disco_desambiguacion
+        description: Distingue discos con el mismo título (Lobo suelto - Cordero atado, Naranja y Gris).
+      - name: anio
+        description: Año de la primera edición del disco.
+        tests:
+          - not_null
+      - name: numero_tema
+        description: Posición del tema en el disco, desde 1.
+        tests:
+          - not_null
+      - name: titulo_original
+        description: Título tal como viene de MusicBrainz.
+      - name: titulo_normalizado
+        description: Título limpio (macro normalizar_titulo), clave para cruzar con el seed de alias.
+        tests:
+          - not_null

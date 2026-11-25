@@ -5,3 +5,6 @@ logs/
 
 metastore_db/
 spark-warehouse/
+
+# Identificador anónimo que crea dbt en cada instalación: no va al repo.
+.user.yml

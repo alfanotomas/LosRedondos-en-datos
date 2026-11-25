@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: crudo
+    description: >
+      Capa bronce: los JSON tal cual los bajaron los extractores
+      (airflow/dags/extraccion). Los registra el macro registrar_fuentes_crudas
+      al arrancar cada corrida. Una fila por archivo, o sea, por extracción.
+    schema: global_temp
+    tables:
+      - name: lastfm_toptracks
+        description: artist.getTopTracks de Last.fm, todas las páginas. `canciones` es un array.
+      - name: musicbrainz_recordings
+        description: Todas las grabaciones del artista en MusicBrainz. `recordings` es un array.
+      - name: musicbrainz_discos_estudio
+        description: Los 10 discos de estudio con su lista de temas. `discos` es un array.
