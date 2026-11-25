@@ -242,3 +242,6 @@ book/
 
 # Datos crudos bajados de las APIs (capa bronce): no se suben a git
 /data/
+
+# Instrucciones para Claude Code: tienen datos personales, quedan solo en la PC.
+CLAUDE.md
