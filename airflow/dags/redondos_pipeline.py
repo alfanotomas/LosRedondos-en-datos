@@ -3,6 +3,7 @@
     extraer_mb_recordings >> extraer_mb_discos_estudio ┐
                                                        ├> dbt_seed >> dbt_run
     extraer_lastfm ────────────────────────────────────┘     >> dbt_test >> dbt_docs_gen
+                                                              >> generar_dashboard
 
 Las dos tareas de MusicBrainz van en fila (no en paralelo) porque la API
 permite una consulta por segundo. Last.fm es otra API, así que corre al mismo
@@ -23,6 +24,7 @@ if CARPETA_DAGS not in sys.path:
     sys.path.insert(0, CARPETA_DAGS)
 
 DBT = "/home/airflow/.venv/bin/dbt"
+PYTHON = "/home/airflow/.venv/bin/python"
 PROYECTO_DBT = "/home/airflow/redondos_analytics"
 OPCIONES_DBT = f"--project-dir {PROYECTO_DBT} --profiles-dir {PROYECTO_DBT}"
 
@@ -77,9 +79,15 @@ def redondos_pipeline():
     dbt_test = dbt("test", "dbt_test")
     dbt_docs_gen = dbt("docs generate", "dbt_docs_gen")
 
+    # Lee los marts y guarda redondos_analytics/dashboard.html.
+    generar_dashboard = BashOperator(
+        task_id="generar_dashboard",
+        bash_command=f"{PYTHON} {PROYECTO_DBT}/dashboard.py",
+    )
+
     musicbrainz = extraer_mb_recordings() >> extraer_mb_discos_estudio()
     [musicbrainz, extraer_lastfm()] >> dbt_seed
-    dbt_seed >> dbt_run >> dbt_test >> dbt_docs_gen
+    dbt_seed >> dbt_run >> dbt_test >> dbt_docs_gen >> generar_dashboard
 
 
 redondos_pipeline()
