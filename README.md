@@ -7,6 +7,8 @@ tres capas con dbt sobre Spark, lo orquesta con Airflow y publica un dashboard.
 Es un proyecto personal para practicar ingeniería de datos con un tema que me
 gusta.
 
+**[Ver el dashboard en vivo →](https://alfanotomas.github.io/LosRedondos-en-datos/)**
+
 ![Dashboard del proyecto](docs/dashboard.png)
 
 ## La pregunta
