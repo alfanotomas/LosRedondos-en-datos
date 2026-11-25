@@ -13,7 +13,7 @@ services:
     environment:
       # Se leen del archivo .env (ver .env.example). Nunca se suben a git.
       - LASTFM_API_KEY=${LASTFM_API_KEY:-}
-      - MUSICBRAINZ_USER_AGENT=${MUSICBRAINZ_USER_AGENT:-RedondosPipeline/0.1}
+      - MUSICBRAINZ_USER_AGENT=${MUSICBRAINZ_USER_AGENT:-RedondosPipeline/0.1 ( https://github.com/alfanotomas/LosRedondos-en-datos )}
       # Carpeta donde los extractores guardan los datos crudos (capa bronce).
       - RUTA_DATOS=/home/airflow/data
     volumes:
