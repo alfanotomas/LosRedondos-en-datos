@@ -1,0 +1,20 @@
+version: 2
+
+seeds:
+  - name: alias_canciones
+    description: >
+      Tabla armada a mano: cada título normalizado (como aparece en MusicBrainz
+      o Last.fm) con su nombre canónico. Regla: el nombre del disco de estudio
+      es el canónico. es_cancion = false marca lo que no es una canción
+      (intros, presentaciones, reportajes).
+    columns:
+      - name: titulo_normalizado
+        tests:
+          - unique
+          - not_null
+      - name: cancion
+        tests:
+          - not_null
+      - name: es_cancion
+        tests:
+          - not_null

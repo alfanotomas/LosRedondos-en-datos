@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: dim_disco
+    description: Los 10 discos de estudio (Lobo suelto - Cordero atado cuenta como dos).
+    columns:
+      - name: disco_id
+        description: MBID del release group en MusicBrainz.
+        tests:
+          - unique
+          - not_null
+      - name: nombre_mostrar
+        description: Nombre para el dashboard; agrega la desambiguación (Naranja / Gris).
+        tests:
+          - unique
+          - not_null
+      - name: anio
+        tests:
+          - not_null
+      - name: decada
+        description: Época del disco (1980s / 1990s / 2000s).
+
+  - name: dim_cancion
+    description: Las canciones de estudio, una por fila. Define el alcance del análisis.
+    columns:
+      - name: cancion_id
+        description: Nombre canónico (seed de alias), en minúsculas y sin tildes.
+        tests:
+          - unique
+          - not_null
+      - name: nombre_mostrar
+        description: Título como figura en el disco, para el dashboard.
+        tests:
+          - not_null
+      - name: disco_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_disco')
+                field: disco_id
+
+  - name: fct_grabacion
+    description: >
+      Grabaciones de MusicBrainz de las canciones de estudio. Versiones
+      registradas en MusicBrainz no es lo mismo que veces tocada en vivo.
+    columns:
+      - name: grabacion_id
+        tests:
+          - unique
+          - not_null
+      - name: cancion_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_cancion')
+                field: cancion_id
+      - name: marcada_en_vivo
+        description: Solo las que MusicBrainz etiquetó como live; es un mínimo.
+
+  - name: fct_popularidad
+    description: >
+      Reproducciones y oyentes en Last.fm por canción y por extracción. Es una
+      muestra (usuarios de Last.fm), no el total real de escuchas.
+    columns:
+      - name: popularidad_id
+        description: Fecha de extracción + canción; una fila por cada par.
+        tests:
+          - unique
+          - not_null
+      - name: cancion_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_cancion')
+                field: cancion_id
+      - name: reproducciones
+        description: Suma de todas las entradas de Last.fm de la canción.
+        tests:
+          - not_null
+      - name: oyentes
+        description: Oyentes de la entrada principal (no se suman entre entradas).
+        tests:
+          - not_null
+      - name: entradas_lastfm
+        description: Cuántas entradas de Last.fm se juntaron en esta canción.
