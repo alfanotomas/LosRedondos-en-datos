@@ -1,0 +1,8 @@
+redondos_analytics:
+  target: local
+  outputs:
+    local:
+      type: spark
+      method: session
+      schema: redondos_db
+      host: localhost

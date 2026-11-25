@@ -1,0 +1,31 @@
+services:
+  airflow-spark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: redondos-airflow-spark
+    container_name: redondos-airflow-spark
+    ports:
+      - "8080:8080"   # Airflow
+      - "4040:4040"   # Spark UI
+      - "8888:8888"   # Jupyter Lab
+      - "8081:8081"   # dbt docs
+    environment:
+      # Se leen del archivo .env (ver .env.example). Nunca se suben a git.
+      - LASTFM_API_KEY=${LASTFM_API_KEY:-}
+      - MUSICBRAINZ_USER_AGENT=${MUSICBRAINZ_USER_AGENT:-RedondosPipeline/0.1}
+      # Carpeta donde los extractores guardan los datos crudos (capa bronce).
+      - RUTA_DATOS=/home/airflow/data
+    volumes:
+      - ./airflow/dags:/home/airflow/dags
+      - ./airflow/redondos_analytics:/home/airflow/redondos_analytics
+      - ./notebooks:/home/airflow/notebooks
+      # Datos crudos: lo que baja Airflow aparece también en data/ de Windows.
+      - ./data:/home/airflow/data
+      - ./README.md:/home/airflow/README.md
+      # Volumen de Docker para que las fotos diarias de reproducciones
+      # no se pierdan si se recrea el contenedor.
+      - warehouse:/home/airflow/warehouse
+
+volumes:
+  warehouse:

@@ -1,0 +1,5 @@
+[lint]
+# EXE002 avisa "archivo ejecutable sin shebang". Es un falso positivo: los
+# archivos vienen de un disco de Windows montado en Docker, donde todos
+# aparecen con permiso de ejecución. No dice nada del código.
+extend-ignore = ["EXE002"]
